@@ -1,10 +1,13 @@
 #include <cassert>
 #include <cstdio>
+#include <cstring>
 #include <iostream>
 #include <fstream>
 #include <memory>
 #include <string>
+#include <sstream>
 #include "ast.hpp"
+#include "visit.hpp"
 using namespace std;
 
 // 声明 lexer 的输入, 以及 parser 函数
@@ -31,14 +34,26 @@ int main(int argc, const char *argv[]) {
   unique_ptr<BaseAST> ast;
   auto ret = yyparse(ast);
   assert(!ret);
-  /*
-  // 输出解析得到的 AST, 其实就是个字符串
-  ast->Dump();
-  cout << endl;
-  */
   ofstream file(output);
   assert(file.is_open());
-  ast->Dump(file);
+  if (!strcmp(mode, "-koopa")) {
+   ast->Dump(file);
+  } else if (!strcmp(mode, "-riscv")) {
+   std::ostringstream oss;
+   ast->Dump(oss);
+   std::string str = oss.str();
+   const char *cstr = str.c_str();
+   koopa_program_t program;
+   koopa_error_code_t error_code = koopa_parse_from_string(cstr, &program);
+   assert(error_code == KOOPA_EC_SUCCESS);
+   koopa_raw_program_builder_t builder = koopa_new_raw_program_builder();
+   koopa_raw_program_t raw = koopa_build_raw_program(builder, program);
+   koopa_delete_program(program);
+   Visit(raw, file);
+   koopa_delete_raw_program_builder(builder);
+  } else {
+    assert(false);
+  }
   file.close();
   return 0;
 }

@@ -18,8 +18,8 @@ void FuncDefAST::Dump() const {
  std::cout << " }";
 }
 
-void FuncDefAST::Dump(std::ostream& os) const { 
- os << "fun " << "@" + ident << "(): ";
+void FuncDefAST::Dump(std::ostream &os) const { 
+ os << "fun @" << ident << "(): ";
  func_type->Dump(os);
  os << "{" << std::endl;
  block->Dump(os);
@@ -30,7 +30,7 @@ void FuncTypeAST::Dump() const {
  std::cout << "FuncTypeAST { " << type << " }";
 }
 
-void FuncTypeAST::Dump(std::ostream& os) const {
+void FuncTypeAST::Dump(std::ostream &os) const {
  if (type == "int") {
   os << "i32 "; 
  }

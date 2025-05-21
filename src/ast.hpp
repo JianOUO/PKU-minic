@@ -11,7 +11,7 @@ class BaseAST {
  public:
   virtual ~BaseAST() = default;
   virtual void Dump() const = 0;
-  virtual void Dump(std::ostream& os) const = 0;
+  virtual void Dump(std::ostream &os) const = 0;
 };
 
 // CompUnit 是 BaseAST
@@ -21,7 +21,7 @@ class CompUnitAST : public BaseAST {
   std::unique_ptr<BaseAST> func_def;
 
   void Dump() const override;
-  void Dump(std::ostream& os) const override;
+  void Dump(std::ostream &os) const override;
 };
 
 // FuncDef 也是 BaseAST
@@ -32,7 +32,7 @@ class FuncDefAST : public BaseAST {
   std::unique_ptr<BaseAST> block;
 
   void Dump() const override;
-  void Dump(std::ostream& os) const override;
+  void Dump(std::ostream &os) const override;
 };
 
 class FuncTypeAST : public BaseAST {
@@ -40,7 +40,7 @@ class FuncTypeAST : public BaseAST {
   std::string type;
 
   void Dump() const override;
-  void Dump(std::ostream& os) const override;
+  void Dump(std::ostream &os) const override;
 };
 
 class BlockAST : public BaseAST {
@@ -48,7 +48,7 @@ class BlockAST : public BaseAST {
   std::unique_ptr<BaseAST> stmt;
   
   void Dump() const override;
-  void Dump(std::ostream& os) const override;
+  void Dump(std::ostream &os) const override;
 };
 
 class StmtAST : public BaseAST {
@@ -56,5 +56,5 @@ class StmtAST : public BaseAST {
   int number;
 
   void Dump() const override;
-  void Dump(std::ostream& os) const override;
+  void Dump(std::ostream &os) const override;
 };
